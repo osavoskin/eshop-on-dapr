@@ -8,6 +8,7 @@ namespace EShop.Common
         public static IServiceCollection AddDaprClients(this IServiceCollection services)
         {
             services.AddScoped<ICatalogClient, CatalogClient>();
+            services.AddScoped<IOrderingClient, OrderingClient>();
             return services;
         }
     }

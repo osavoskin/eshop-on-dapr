@@ -1,16 +1,33 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Catalog";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div style="width: 150px; margin: 30px auto">
+    <p>Pick your goods:</p>
+    <form method="post" class="text-center">
 
-<form method="post" class="text-center">
-    <label for="orderId">Order Id</label>
-    <input id="orderId" readonly name="orderId" value="@System.Guid.NewGuid()"/>
-    <button type="submit" asp-page-handler="Submit">Submit order</button>
-</form>
+        <table>
+            @for (var i = 0; i < Model.Items.Count(); i++)
+            {
+                <tr>
+                    <td class="text-left">
+                        @Html.EditorFor(o => Model.Items.ElementAt(i).IsChecked, null,
+                            $"items[{i}].IsChecked", new { id = $"items[{i}].IsChecked" })
+                        @Html.Label($"items[{i}].IsChecked",
+                            Model.Items.ElementAt(i).Title + $" x{Model.Items.ElementAt(i).Count}")
+
+                        <input type="hidden" name="items[@i].Id" value="@Model.Items.ElementAt(i).Id" />
+                        <input type="hidden" name="items[@i].Count" value="@Model.Items.ElementAt(i).Count" />
+                        <input type="hidden" name="items[@i].Price" value="@Model.Items.ElementAt(i).Price" />
+                        <input type="hidden" name="items[@i].Title" value="@Model.Items.ElementAt(i).Title" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td><button class="mt-2" type="submit" asp-page-handler="Submit">Submit</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
