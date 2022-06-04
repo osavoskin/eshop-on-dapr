@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EShop.Common\EShop.Common.csproj" />
+  </ItemGroup>
+
 </Project>

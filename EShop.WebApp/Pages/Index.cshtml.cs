@@ -1,20 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EShop.Common.Clients;
+using EShop.Common.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EShop.WebApp.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexModel> logger;
+        private readonly ICatalogClient catalogClient;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IEnumerable<Item> CatalogItems { get; private set; }
+
+        public IndexModel(ILogger<IndexModel> logger, ICatalogClient catalogClient)
         {
-            _logger = logger;
+            this.logger = logger;
+            this.catalogClient = catalogClient;
+        }
+
+        public async Task OnGet()
+        {
+            CatalogItems = await catalogClient.GetItems();
         }
 
         public async Task OnPostSubmit(Guid orderId)

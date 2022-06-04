@@ -5,4 +5,13 @@
     <UserSecretsId>3285ec1c-ca77-4bbc-a538-35cf155516f7</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
+    <PackageReference Include="Man.Dapr.Sidekick.AspNetCore" Version="1.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EShop.Common\EShop.Common.csproj" />
+  </ItemGroup>
+
 </Project>

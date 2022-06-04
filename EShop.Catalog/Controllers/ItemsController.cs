@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EShop.Common.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EShop.Catalog.Controllers
 {
@@ -33,23 +32,14 @@ namespace EShop.Catalog.Controllers
             }
         };
 
-        private readonly ILogger<ItemsController> _logger;
+        private readonly ILogger<ItemsController> logger;
 
         public ItemsController(ILogger<ItemsController> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
 
         [HttpGet]
         public IEnumerable<Item> Get() => items;
-    }
-
-    public class Item
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-
-        public string Title { get; set; }
-
-        public decimal Price { get; set; }
     }
 }
