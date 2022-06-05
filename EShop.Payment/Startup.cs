@@ -1,12 +1,11 @@
 using EShop.Common;
-using EShop.WebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace EShop.WebApp
+namespace EShop.Payment
 {
     public class Startup
     {
@@ -19,11 +18,8 @@ namespace EShop.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages().AddDapr();
-            services.AddDaprSidekick(Configuration);
+            services.AddControllers().AddDapr();
             services.AddDaprClients();
-
-            services.AddScoped<IStateStore, StateStore>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,14 +28,6 @@ namespace EShop.WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -50,7 +38,7 @@ namespace EShop.WebApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapSubscribeHandler();
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

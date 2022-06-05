@@ -17,7 +17,9 @@ namespace EShop.Common.Clients
 
         public Task<IEnumerable<Item>> GetItems()
         {
-            return daprClient.InvokeMethodAsync<IEnumerable<Item>>(HttpMethod.Get, "catalog", "Items");
+            return daprClient.InvokeMethodAsync<IEnumerable<Item>>(
+                HttpMethod.Get, "catalog", "api/Items"
+            );
         }
     }
 }

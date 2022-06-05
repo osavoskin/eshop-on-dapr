@@ -59,7 +59,13 @@ namespace EShop.WebApp.Pages
         public async Task<IActionResult> OnPostSubmit(IEnumerable<CatalogItem> items)
         {
             await stateStore.ClearStore();
-            await orderingClient.PlaceOrder(new Order() { Id = Guid.NewGuid() });
+
+            await orderingClient.NotifyOrderSubmitted(new Order()
+            {
+                Items = items.Where(o => o.IsChecked)
+                             .ToDictionary(o => o.Id.ToString(), o => o.Count)
+            });
+
             return RedirectToAction("OnGet");
         }
     }

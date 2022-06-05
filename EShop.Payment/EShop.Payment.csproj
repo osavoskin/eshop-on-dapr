@@ -5,16 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.7.0" />
       <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
   </ItemGroup>
-
+    
   <ItemGroup>
       <ProjectReference Include="..\EShop.Common\EShop.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Actors\" />
-  </ItemGroup>
-    
 </Project>
