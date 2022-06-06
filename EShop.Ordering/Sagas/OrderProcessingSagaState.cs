@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EShop.Common.Models
+namespace EShop.Ordering.Sagas
 {
-    public class Order
+    public class OrderProcessingSagaState
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public string CurrentState { get; set; }
+
+        public Guid OrderId { get; set; }
 
         public IDictionary<string, int> Items { get; set; }
 

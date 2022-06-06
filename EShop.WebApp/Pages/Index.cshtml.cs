@@ -1,5 +1,4 @@
 ﻿using EShop.Common.Clients;
-using EShop.Common.Models;
 using EShop.WebApp.Models;
 using EShop.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -60,11 +59,13 @@ namespace EShop.WebApp.Pages
         {
             await stateStore.ClearStore();
 
-            await orderingClient.NotifyOrderSubmitted(new Order()
-            {
-                Items = items.Where(o => o.IsChecked)
-                             .ToDictionary(o => o.Id.ToString(), o => o.Count)
-            });
+            var selectedItems = items.Where(o => o.IsChecked);
+            var sum = selectedItems.Sum(o => o.Price * o.Count);
+
+            await orderingClient.NotifyOrderSubmitted(
+                Guid.NewGuid(),
+                selectedItems.ToDictionary(o => o.Id.ToString(), o => o.Count),
+                sum);
 
             return RedirectToAction("OnGet");
         }

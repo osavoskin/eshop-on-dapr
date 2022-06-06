@@ -1,5 +1,4 @@
-﻿using EShop.Common.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,16 +6,18 @@ namespace EShop.Common.Clients
 {
     public interface IOrderingClient
     {
-        Task NotifyOrderSubmitted(Order order);
+        Task NotifyOrderSubmitted(Guid orderId, IDictionary<string, int> items, decimal sum);
 
-        Task NotifyStockCheckRequested(Order order);
+        Task NotifyStockCheckRequested(Guid orderId, IDictionary<string, int> items);
 
-        Task NotifyStockChecked(IEnumerable<Guid> missingItems);
+        Task NotifyStockChecked(Guid orderId, IEnumerable<Guid> missingItems);
 
         Task NotifyPaymentRequested(Guid orderId, decimal sum);
 
         Task NotifyOrderPayed(Guid orderId, bool success);
-        
-        Task NotifyItemsSold(IDictionary<Guid, int> soldItems);
+
+        Task NotifyStockUpdateRequested(Guid orderId, IDictionary<string, int> soldItems);
+
+        Task NotifyStockUpdated(Guid orderId);
     }
 }

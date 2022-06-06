@@ -24,7 +24,7 @@ namespace EShop.Payment.Controllers
         [Topic("pubsub", "paymentRequested")]
         public async Task OnPaymentRequested(PaymentRequestedEvent @event)
         {
-            logger.LogInformation("Checked - the items are in stock");
+            logger.LogInformation("Processing payment... Done");
             await orderingClient.NotifyOrderPayed(@event.OrderId, true);
         }
     }

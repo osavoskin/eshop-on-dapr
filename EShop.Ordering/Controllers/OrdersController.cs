@@ -1,8 +1,10 @@
 ﻿using Dapr;
-using EShop.Common.Clients;
+using Dapr.Actors;
+using Dapr.Actors.Client;
 using EShop.Common.Models.OrderProcessing;
+using EShop.Ordering.Actors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace EShop.Ordering.Controllers
@@ -11,21 +13,51 @@ namespace EShop.Ordering.Controllers
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly ILogger<OrdersController> logger;
-        private readonly IOrderingClient orderingClient;
+        private readonly IActorProxyFactory actorProxyFactory;
 
-        public OrdersController(ILogger<OrdersController> logger, IOrderingClient orderingClient)
+        public OrdersController(IActorProxyFactory actorProxyFactory)
         {
-            this.logger = logger;
-            this.orderingClient = orderingClient;
+            this.actorProxyFactory = actorProxyFactory;
         }
 
-        [HttpPost]
+        [HttpPost("orderSubmitted")]
         [Topic("pubsub", "orderSubmitted")]
         public async Task OnOrderSubmitted(OrderSubmittedEvent @event)
         {
-            logger.LogInformation("New order submitted: " + @event.Order.Id);
-            await orderingClient.NotifyStockCheckRequested(@event.Order);
+            var actor = GetOrderingProcessActor(@event.OrderId);
+            await actor.NotifyOrderSubmitted(@event);
+        }
+
+        [HttpPost("stockChecked")]
+        [Topic("pubsub", "stockChecked")]
+        public async Task OnStockChecked(StockCheckedEvent @event)
+        {
+            var actor = GetOrderingProcessActor(@event.OrderId);
+            await actor.NotifyStockChecked(@event);
+        }
+
+        [HttpPost("orderPayed")]
+        [Topic("pubsub", "orderPayed")]
+        public async Task OnOrderPayed(OrderPayedEvent @event)
+        {
+            var actor = GetOrderingProcessActor(@event.OrderId);
+            await actor.NotifyOrderPayed(@event);
+        }
+
+        [HttpPost("stockUpdated")]
+        [Topic("pubsub", "stockUpdated")]
+        public async Task OnStockUpdated(StockUpdatedEvent @event)
+        {
+            var actor = GetOrderingProcessActor(@event.OrderId);
+            await actor.NotifyStockUpdated(@event);
+        }
+
+        private IOrderProcessorActor GetOrderingProcessActor(Guid orderId)
+        {
+            var actorId = new ActorId(orderId.ToString());
+            return actorProxyFactory.CreateActorProxy<IOrderProcessorActor>(
+                actorId,
+                nameof(OrderProcessorActor));
         }
     }
 }

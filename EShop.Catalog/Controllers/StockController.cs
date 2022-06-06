@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EShop.Catalog.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class StockController : ControllerBase
     {
@@ -22,18 +22,18 @@ namespace EShop.Catalog.Controllers
 
         [HttpPost("stockCheckRequested")]
         [Topic("pubsub", "stockCheckRequested")]
-        public async Task OnStockCheckRequested(StockCheckRequestedEvent @event)
+        public Task OnStockCheckRequested(StockCheckRequestedEvent @event)
         {
             logger.LogInformation("Checked: the items are in stock");
-            await orderingClient.NotifyStockChecked(missingItems: null);
+            return orderingClient.NotifyStockChecked(@event.OrderId, missingItems: null);
         }
 
-        [HttpPost("itemsSold")]
-        [Topic("pubsub", "itemsSold")]
-        public Task OnItemsSold(ItemsSoldEvent @event)
+        [HttpPost("stockUpdateRequested")]
+        [Topic("pubsub", "stockUpdateRequested")]
+        public Task OnItemsSold(StockUpdateRequestedEvent @event)
         {
-            logger.LogInformation("Order processing completed");
-            return Task.CompletedTask;
+            logger.LogInformation("Stock being updated... Done");
+            return orderingClient.NotifyStockUpdated(@event.OrderId);
         }
     }
 }

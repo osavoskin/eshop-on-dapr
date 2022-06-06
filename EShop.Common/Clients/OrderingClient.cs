@@ -1,5 +1,4 @@
 ﻿using Dapr.Client;
-using EShop.Common.Models;
 using EShop.Common.Models.OrderProcessing;
 using System;
 using System.Collections.Generic;
@@ -17,29 +16,33 @@ namespace EShop.Common.Clients
             this.daprClient = daprClient;
         }
 
-        public Task NotifyOrderSubmitted(Order order)
+        public Task NotifyOrderSubmitted(Guid orderId, IDictionary<string, int> items, decimal sum)
         {
             return daprClient.PublishEventAsync(PubsubName, "orderSubmitted",
                 new OrderSubmittedEvent
                 {
-                    Order = order
+                    OrderId = orderId,
+                    Items = items,
+                    Sum = sum
                 });
         }
 
-        public Task NotifyStockCheckRequested(Order order)
+        public Task NotifyStockCheckRequested(Guid orderId, IDictionary<string, int> items)
         {
             return daprClient.PublishEventAsync(PubsubName, "stockCheckRequested",
                 new StockCheckRequestedEvent
                 {
-                    Order = order
+                    OrderId = orderId,
+                    Items = items,
                 });
         }
 
-        public Task NotifyStockChecked(IEnumerable<Guid> missingItems)
+        public Task NotifyStockChecked(Guid orderId, IEnumerable<Guid> missingItems)
         {
             return daprClient.PublishEventAsync(PubsubName, "stockChecked",
                 new StockCheckedEvent
                 {
+                    OrderId = orderId,
                     MissingItems = missingItems
                 });
         }
@@ -64,12 +67,22 @@ namespace EShop.Common.Clients
                 });
         }
 
-        public Task NotifyItemsSold(IDictionary<Guid, int> soldItems)
+        public Task NotifyStockUpdateRequested(Guid orderId, IDictionary<string, int> soldItems)
         {
-            return daprClient.PublishEventAsync(PubsubName, "itemsSold",
-                new ItemsSoldEvent
+            return daprClient.PublishEventAsync(PubsubName, "stockUpdateRequested",
+                new StockUpdateRequestedEvent
                 {
+                    OrderId = orderId,
                     Items = soldItems
+                });
+        }
+
+        public Task NotifyStockUpdated(Guid orderId)
+        {
+            return daprClient.PublishEventAsync(PubsubName, "stockUpdated",
+                new StockUpdatedEvent
+                {
+                    OrderId = orderId
                 });
         }
     }

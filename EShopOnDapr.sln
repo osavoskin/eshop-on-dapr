@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShop.WebApp", "EShop.WebAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShop.Catalog", "EShop.Catalog\EShop.Catalog.csproj", "{F80AB494-4AC5-4752-B950-4D9BE8D8C636}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Common", "EShop.Common\EShop.Common.csproj", "{DF0BE920-2531-4919-9CBD-FBD26F8DBE17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShop.Common", "EShop.Common\EShop.Common.csproj", "{DF0BE920-2531-4919-9CBD-FBD26F8DBE17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Ordering", "EShop.Ordering\EShop.Ordering.csproj", "{9C411761-DC24-46FF-AE13-190B31D98C25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShop.Ordering", "EShop.Ordering\EShop.Ordering.csproj", "{9C411761-DC24-46FF-AE13-190B31D98C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Payment", "EShop.Payment\EShop.Payment.csproj", "{20967FE4-79A5-4076-B34A-B70942D8D824}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShop.Payment", "EShop.Payment\EShop.Payment.csproj", "{20967FE4-79A5-4076-B34A-B70942D8D824}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
