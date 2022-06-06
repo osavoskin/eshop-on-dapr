@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace EShop.Ordering
 {
@@ -28,6 +29,9 @@ namespace EShop.Ordering
                 options.Actors.RegisterActor<OrderProcessorActor>();
             });
 
+            var envVar = Environment.GetEnvironmentVariable("DISABLE_SIDEKICK");
+            bool.TryParse(envVar, out var sidekickDisabled);
+
             services.AddDaprSidekick(Configuration, o =>
             {
                 o.Sidecar = new DaprSidecarOptions
@@ -36,7 +40,8 @@ namespace EShop.Ordering
                     DaprHttpPort = 3553,
                     PlacementHostAddress = "127.0.0.1:50005",
                     ComponentsDirectory = "../Dapr/Components",
-                    ConfigFile = "../Dapr/Config/config.yaml"
+                    ConfigFile = "../Dapr/Config/config.yaml",
+                    Enabled = !sidekickDisabled
                 };
             });
         }
