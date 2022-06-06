@@ -21,7 +21,7 @@ services:
       - eshop-on-dapr 
       
   webapp-dapr:
-    image: "daprio/daprd:1.7.3"
+    image: "daprio/daprd:1.7.4"
     command: [
       "./daprd",
       "-app-id", "webapp",
@@ -51,7 +51,7 @@ services:
       - eshop-on-dapr
       
   catalog-dapr:
-    image: "daprio/daprd:1.7.3"
+    image: "daprio/daprd:1.7.4"
     command: [
       "./daprd",
       "-app-id", "catalog",
@@ -82,7 +82,7 @@ services:
       - eshop-on-dapr  
       
   ordering-dapr:
-    image: "daprio/daprd:1.7.3"
+    image: "daprio/daprd:1.7.4"
     command: [
       "./daprd",
       "-app-id", "ordering",
@@ -113,7 +113,7 @@ services:
       - eshop-on-dapr 
       
   payment-dapr:
-    image: "daprio/daprd:1.7.3"
+    image: "daprio/daprd:1.7.4"
     command: [
       "./daprd",
       "-app-id", "payment",
